@@ -27,3 +27,10 @@
 /Users/remy/programming/vdpSchool/VisualDevProSchool/obj/Debug/net10.0/VisualDevProSchool.pdb
 /Users/remy/programming/vdpSchool/VisualDevProSchool/obj/Debug/net10.0/VisualDevProSchool.genruntimeconfig.cache
 /Users/remy/programming/vdpSchool/VisualDevProSchool/obj/Debug/net10.0/ref/VisualDevProSchool.dll
+/Users/remy/programming/vdpSchool/VisualDevProSchool/bin/Debug/net10.0/Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore.dll
+/Users/remy/programming/vdpSchool/VisualDevProSchool/bin/Debug/net10.0/Microsoft.EntityFrameworkCore.dll
+/Users/remy/programming/vdpSchool/VisualDevProSchool/bin/Debug/net10.0/Microsoft.EntityFrameworkCore.Abstractions.dll
+/Users/remy/programming/vdpSchool/VisualDevProSchool/bin/Debug/net10.0/Microsoft.EntityFrameworkCore.InMemory.dll
+/Users/remy/programming/vdpSchool/VisualDevProSchool/bin/Debug/net10.0/Microsoft.EntityFrameworkCore.Relational.dll
+/Users/remy/programming/vdpSchool/VisualDevProSchool/obj/Debug/net10.0/VisualDevProSchool.csproj.AssemblyReference.cache
+/Users/remy/programming/vdpSchool/VisualDevProSchool/obj/Debug/net10.0/VisualDe.EB1F5F5D.Up2Date
