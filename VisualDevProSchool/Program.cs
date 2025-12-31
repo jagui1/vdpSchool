@@ -28,20 +28,25 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+var vdpSchool = app.MapGroup("/vdpschool");
+
 app.MapGet("/", () => "Hello Cruel World!");
 
-app.MapPost("/todoitems", async (Todo todo, TodoDb db) =>
-{
+vdpSchool.MapPost("/todoitems", CreateTodo);
+vdpSchool.MapGet("/todoitems/{id}", GetTodo);
+
+app.Run();
+
+static async Task<IResult> CreateTodo(Todo todo, TodoDb db) {
     db.Todos.Add(todo);
     await db.SaveChangesAsync();
 
-    return Results.Created($"/todoitems/{todo.Id}", todo);
-});
+    return TypedResults.Created($"/todoitems/{todo.Id}", todo);
+}
 
-app.MapGet("/todoitems/{id}", async (int id, TodoDb db) =>
-    await db.Todos.FindAsync(id)
+static async Task<IResult> GetTodo(int id, TodoDb db) {
+    return await db.Todos.FindAsync(id)
         is Todo todo
-            ? Results.Ok(todo)
-            : Results.NotFound());
-            
-app.Run();
+            ? TypedResults.Ok(todo)
+            : TypedResults.NotFound();
+}
