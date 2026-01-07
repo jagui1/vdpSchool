@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from "@angular/router";
 import { SchoolService } from '../services/school.service';
 import { School } from '../interfaces/school';
 import { MatDialog } from '@angular/material/dialog';
@@ -6,22 +7,27 @@ import { MatTableDataSource } from '@angular/material/table';
 import { UpdateDialogComponent } from '../dialogs/update-dialog/update-dialog.component';
 import { DeleteDialogComponent } from '../dialogs/delete-dialog/delete-dialog.component';
 import { CreateDialogComponent } from '../dialogs/create-dialog/create-dialog.component';
+import { Course } from '../interfaces/course';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  selector: 'app-courses',
+  templateUrl: './courses.component.html',
+  styleUrls: ['./courses.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class CoursesComponent implements OnInit {
 
-  dataSource = new MatTableDataSource<School>([]);
+    schoolId!: number;
+    schoolName!: string;
 
-  columnsToDisplay = ['name', 'address', 'Courses', 'Teachers', 'Students', 'Update', 'Delete'];
+    dataSource = new MatTableDataSource<Course>([]);
+  
+    columnsToDisplay = ['name', 'Update', 'Delete'];
+  
+    constructor(private route: ActivatedRoute, private schoolService: SchoolService, private dialog: MatDialog) {}
 
-  constructor(private schoolService: SchoolService, private dialog: MatDialog) { }
-
-  ngOnInit() {
-    this.updateDataSource();
+    ngOnInit() {
+      this.schoolId = Number(this.route.snapshot.paramMap.get('id'));
+      this.updateDataSource();
   }
 
   onUpdate(school: School) {
@@ -62,10 +68,11 @@ export class HomeComponent implements OnInit {
   }
 
   updateDataSource() {
-    this.schoolService.getSchools().subscribe({
-      next: (data: School[]) => {
-        console.log(data);
-        this.dataSource.data = data;
+    this.schoolService.getSchool(this.schoolId).subscribe({
+      next: (data: School) => {
+        console.log(data.courses);
+        this.dataSource.data = data.courses;
+        this.schoolName = data.name ? data.name : "Cannot find School Name";
         console.log(this.dataSource);
       },
       error: (err) => {

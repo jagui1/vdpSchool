@@ -112,8 +112,8 @@ app.MapGet("/", () => "Hello Cruel World!");
 vdpSchool.MapGet("/schools/", GetAllSchools);
 vdpSchool.MapPost("/schools", CreateSchool);
 vdpSchool.MapGet("/schools/{id}", GetSchool);
-vdpSchool.MapPut("/{id}", UpdateSchool);
-vdpSchool.MapDelete("/{id}", DeleteSchool);
+vdpSchool.MapPut("schools/{id}", UpdateSchool);
+vdpSchool.MapDelete("schools/{id}", DeleteSchool);
 
 app.Run();
 
