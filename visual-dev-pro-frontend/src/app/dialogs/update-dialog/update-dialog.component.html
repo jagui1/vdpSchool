@@ -1,0 +1,22 @@
+<div id="updateForm">
+
+    <h1 id="updateContactTitle">Update Contact</h1>
+    <form [formGroup]="updateForm" (ngSubmit)="onSubmit()" class="myform">
+
+        <div class="myInputs">
+            <mat-form-field class="example-full-width">
+                <mat-label>Name</mat-label>
+                <input matInput formControlName="name">
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width">
+                <mat-label>Address</mat-label>
+                <input matInput formControlName="address">
+            </mat-form-field>
+        </div>
+
+        <button class="actionButtons" type="button" mat-dialog-close mat-raised-button color="warn">Cancel</button>
+        <button class="actionButtons" [disabled]="updateForm.invalid" type="submit" mat-raised-button
+            color="primary">Update</button>
+    </form>
+</div>

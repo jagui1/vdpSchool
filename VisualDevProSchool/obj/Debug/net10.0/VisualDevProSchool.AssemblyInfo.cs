@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("VisualDevProSchool")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+399159ac2d0243a26d501370f9f7ff3fcd8f15e2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1e12a069009ff15c77457504f2c41a4ae2c76116")]
 [assembly: System.Reflection.AssemblyProductAttribute("VisualDevProSchool")]
 [assembly: System.Reflection.AssemblyTitleAttribute("VisualDevProSchool")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

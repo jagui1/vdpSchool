@@ -91,6 +91,8 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+app.UseCors("FrontendPolicy");
+
 var vdpSchool = app.MapGroup("/vdpschool");
 
 app.MapGet("/", () => "Hello Cruel World!");
