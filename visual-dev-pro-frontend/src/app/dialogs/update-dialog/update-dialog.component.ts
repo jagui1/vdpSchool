@@ -48,9 +48,8 @@ export class UpdateDialogComponent implements OnInit {
       },
       complete: () => {
         console.log('School updated successfully');
+        this.dialogRef.close(true);
       }
     });
-
-    this.dialogRef.close();
   }
 }

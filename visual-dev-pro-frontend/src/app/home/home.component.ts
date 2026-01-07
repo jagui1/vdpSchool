@@ -14,9 +14,7 @@ import { CreateDialogComponent } from '../dialogs/create-dialog/create-dialog.co
 })
 export class HomeComponent implements OnInit {
 
-  schoolDataArray: any = [];
-
-  dataSource = new MatTableDataSource<School>();
+  dataSource = new MatTableDataSource<School>([]);
 
   columnsToDisplay = ['name', 'address', 'Update', 'Delete'];
 
@@ -57,16 +55,17 @@ export class HomeComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.updateDataSource();
+      if(result){
+        this.updateDataSource();
+      }
     });
   }
 
   updateDataSource() {
     this.schoolService.getSchools().subscribe({
-      next: (data) => {
+      next: (data: School[]) => {
         console.log(data);
-        this.schoolDataArray = data;
-        this.dataSource = new MatTableDataSource<School>(this.schoolDataArray);
+        this.dataSource.data = data;
         console.log(this.dataSource);
       },
       error: (err) => {

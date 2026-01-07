@@ -11,7 +11,7 @@ export class SchoolService {
   constructor(private http: HttpClient) { }
 
   getSchools() {
-    return this.http.get<School>('http://localhost:5045/vdpschool/schools');
+    return this.http.get<School[]>('http://localhost:5045/vdpschool/schools');
   }
 
   createSchool(newSchool: School) {

@@ -37,9 +37,9 @@ export class DeleteDialogComponent {
       },
       complete: () => {
         console.log('School deleted successfully');
+        this.dialogRef.close(true);
       }
     });
-    this.dialogRef.close();
   }
 
 }
