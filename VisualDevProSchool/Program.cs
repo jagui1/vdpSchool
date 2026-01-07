@@ -2,26 +2,89 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// CORS Policy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("FrontendPolicy",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:4200")
+                                .AllowAnyHeader()
+                                .AllowAnyMethod();
+        });
+});
+
 // Adds database context to the dependency Injection
-builder.Services.AddDbContext<TodoDb>(opt => opt.UseInMemoryDatabase("TodoList"));
+builder.Services.AddDbContext<SchoolDbContext>(opt => opt.UseInMemoryDatabase("VDPSchool"));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 // Swagger Middleware
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApiDocument(config =>
 {
-    config.DocumentName = "TodoAPI";
-    config.Title = "TodoAPI v1";
+    config.DocumentName = "VDPSchoolAPI";
+    config.Title = "VDPSchoolAPI v1";
     config.Version = "v1";
 });
 var app = builder.Build();
+
+
+// Runtime seeding 
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<SchoolDbContext>();
+
+    if (!context.Schools.Any())
+    {
+        var businessCourse = new Course { CourseName = "Business" };
+        var csharpCourse = new Course { CourseName = "C#" };
+        var angularCourse = new Course { CourseName = "Angular" };
+
+        var teacherMurphy = new Teacher
+        {
+            FullName = "Mr. Murphy",
+            Email = "murphy@vdp.edu",
+            Subject = "Computer Science",
+            CoursesTaught = { csharpCourse, angularCourse }
+        };
+
+        var teacherBaltimore = new Teacher
+        {
+            FullName = "Mr. Baltimore",
+            Email = "baltimore@vdp.edu",
+            Subject = "Business",
+            CoursesTaught = { businessCourse }
+        };
+
+        var studentJeremy = new Student
+        {
+            FullName = "Jeremy A",
+            Email = "agui1@vdp.edu",
+            GradeLevel = 17,
+            EnrolledCourses = { businessCourse, csharpCourse, angularCourse }
+        };
+
+        var school = new School
+        {
+            Name = "VDP University",
+            Address = "San Antonio, TX",
+            Students = { studentJeremy },
+            Teachers = { teacherMurphy, teacherBaltimore },
+            Courses = { businessCourse, csharpCourse, angularCourse }
+        };
+
+
+        context.Schools.Add(school);
+        context.SaveChanges();
+    }
+}
 
 if (app.Environment.IsDevelopment())
 {
     app.UseOpenApi();
     app.UseSwaggerUi(config =>
     {
-        config.DocumentTitle = "TodoAPI";
+        config.DocumentTitle = "VDPSchoolAPI";
         config.Path = "/swagger";
         config.DocumentPath = "/swagger/{documentName}/swagger.json";
         config.DocExpansion = "list";
@@ -31,22 +94,98 @@ if (app.Environment.IsDevelopment())
 var vdpSchool = app.MapGroup("/vdpschool");
 
 app.MapGet("/", () => "Hello Cruel World!");
-
-vdpSchool.MapPost("/todoitems", CreateTodo);
-vdpSchool.MapGet("/todoitems/{id}", GetTodo);
+vdpSchool.MapGet("/schools/", GetAllSchools);
+vdpSchool.MapPost("/schools", CreateSchool);
+vdpSchool.MapGet("/schools/{id}", GetSchool);
+vdpSchool.MapPut("/{id}", UpdateSchool);
+vdpSchool.MapDelete("/{id}", DeleteSchool);
 
 app.Run();
 
-static async Task<IResult> CreateTodo(Todo todo, TodoDb db) {
-    db.Todos.Add(todo);
+static async Task<IResult> CreateSchool(School school, SchoolDbContext db) {
+    db.Schools.Add(school);
     await db.SaveChangesAsync();
 
-    return TypedResults.Created($"/todoitems/{todo.Id}", todo);
+    return TypedResults.Created($"/schools/{school.Id}", school);
 }
 
-static async Task<IResult> GetTodo(int id, TodoDb db) {
-    return await db.Todos.FindAsync(id)
-        is Todo todo
-            ? TypedResults.Ok(todo)
-            : TypedResults.NotFound();
+static async Task<IResult> GetAllSchools(SchoolDbContext db) {
+    var schools = await db.Schools
+        .Include(s => s.Teachers)
+            .ThenInclude(t => t.CoursesTaught)
+        .Include(s => s.Students)
+            .ThenInclude(st => st.EnrolledCourses)
+        .Include(s => s.Courses)
+        .ToArrayAsync();
+
+    return TypedResults.Ok(schools);
+}
+
+static async Task<IResult> GetSchool(int id, SchoolDbContext db) {
+    var school = await db.Schools
+        .Include(s => s.Teachers)
+            .ThenInclude(t => t.CoursesTaught)
+        .Include(s => s.Students)
+            .ThenInclude(st => st.EnrolledCourses)
+        .Include(s => s.Courses)
+        .FirstOrDefaultAsync(s => s.Id == id);
+
+    return school is not null
+        ? TypedResults.Ok(school)
+        : TypedResults.NotFound();
+}
+
+static async Task<IResult> UpdateSchool(int id, School updatedSchool, SchoolDbContext db)
+{
+    // Load existing school with nested objects
+    var school = await db.Schools
+        .Include(s => s.Teachers)
+            .ThenInclude(t => t.CoursesTaught)
+        .Include(s => s.Students)
+            .ThenInclude(st => st.EnrolledCourses)
+        .Include(s => s.Courses)
+        .FirstOrDefaultAsync(s => s.Id == id);
+
+    if (school == null)
+        return TypedResults.NotFound();
+
+    // Update scalar properties
+    school.Name = updatedSchool.Name;
+    school.Address = updatedSchool.Address;
+
+    // --- OPTIONAL: update Teachers, Courses, Students manually ---
+    // This depends on how much of your object graph you want to allow updating
+
+    // Example: update existing course names
+    foreach (var updatedCourse in updatedSchool.Courses)
+    {
+        var existingCourse = school.Courses.FirstOrDefault(c => c.Id == updatedCourse.Id);
+        if (existingCourse != null)
+            existingCourse.CourseName = updatedCourse.CourseName;
+    }
+
+    // Example: update teacher names
+    foreach (var updatedTeacher in updatedSchool.Teachers)
+    {
+        var existingTeacher = school.Teachers.FirstOrDefault(t => t.Id == updatedTeacher.Id);
+        if (existingTeacher != null)
+            existingTeacher.FullName = updatedTeacher.FullName;
+    }
+
+    // Save changes
+    await db.SaveChangesAsync();
+
+    return TypedResults.Ok(school);
+}
+
+static async Task<IResult> DeleteSchool(int id, SchoolDbContext db)
+{
+    if (await db.Schools.FindAsync(id) is School school)
+    {
+        db.Schools.Remove(school);
+        await db.SaveChangesAsync();
+        return TypedResults.NoContent();
+    }
+
+    return TypedResults.NotFound();
 }
