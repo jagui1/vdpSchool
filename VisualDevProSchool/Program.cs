@@ -75,6 +75,19 @@ using (var scope = app.Services.CreateScope())
 
 
         context.Schools.Add(school);
+
+        school = new School
+        {
+            Name = "EHS University",
+            Address = "San Antonio, TX",
+            Students = { studentJeremy },
+            Teachers = { teacherMurphy, teacherBaltimore },
+            Courses = { businessCourse, csharpCourse, angularCourse }
+        };
+
+
+        context.Schools.Add(school);
+
         context.SaveChanges();
     }
 }

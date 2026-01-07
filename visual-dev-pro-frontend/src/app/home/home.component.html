@@ -15,7 +15,7 @@
     <ng-container matColumnDef="Update">
         <th mat-header-cell *matHeaderCellDef> Update </th>
         <td mat-cell *matCellDef="let school">
-            <button mat-raised-button color="primary" (click)="onUpdate(school)">Update</button>
+            <button mat-raised-button color="accent" (click)="onUpdate(school)">Update</button>
         </td>
     </ng-container>
 
@@ -29,3 +29,5 @@
     <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
     <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></tr>
 </table>
+
+<button mat-raised-button color="primary" (click)="onCreate()">Create</button>

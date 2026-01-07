@@ -18,11 +18,19 @@ export class SchoolService {
     return this.http.post<School>('http://localhost:5045/vdpschool/schools', newSchool);
   }
 
-  updateSchool(id: number, updateSchool: School) {
-    return this.http.put<School>(`http://localhost:5045/vdpschool/${id}`, updateSchool);
+  updateSchool(updateSchool: School) {
+    if(!updateSchool.id) {
+      throw new Error('School ID not found: ID is required for update.');
+    }
+
+    return this.http.put<School>(`http://localhost:5045/vdpschool/${updateSchool.id}`, updateSchool);
   }
 
-  deleteSchool(id: number) {
-    return this.http.delete(`http://localhost:5045/vdpschool/${id}`);
+  deleteSchool(schoolToDelete: School) {
+    if(!schoolToDelete.id) {
+      throw new Error('School ID not found: ID is required for delete.');
+    }
+
+    return this.http.delete(`http://localhost:5045/vdpschool/${schoolToDelete.id}`);
   }
 }

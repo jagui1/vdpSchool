@@ -39,7 +39,7 @@ export class UpdateDialogComponent implements OnInit {
       courses: this.schoolToUpdate.courses
     };
 
-    this.schoolService.updateSchool(this.updateSchool.id, this.updateSchool).subscribe({
+    this.schoolService.updateSchool(this.updateSchool).subscribe({
       next: (data) => {
         console.log(data);
       },

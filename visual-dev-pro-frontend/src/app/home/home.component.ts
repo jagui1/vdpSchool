@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { UpdateDialogComponent } from '../dialogs/update-dialog/update-dialog.component';
 import { DeleteDialogComponent } from '../dialogs/delete-dialog/delete-dialog.component';
+import { CreateDialogComponent } from '../dialogs/create-dialog/create-dialog.component';
 
 @Component({
   selector: 'app-home',
@@ -42,6 +43,17 @@ export class HomeComponent implements OnInit {
       height: '500px',
       width: '500px',
       data: school,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.updateDataSource();
+    });
+  }
+
+  onCreate(){
+    let dialogRef = this.dialog.open(CreateDialogComponent, {
+      height: '500px',
+      width: '500px',
     });
 
     dialogRef.afterClosed().subscribe(result => {

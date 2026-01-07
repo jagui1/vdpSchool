@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { UpdateDialogComponent } from './dialogs/update-dialog/update-dialog.component';
 import { DeleteDialogComponent } from './dialogs/delete-dialog/delete-dialog.component';
+import { CreateDialogComponent } from './dialogs/create-dialog/create-dialog.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -26,7 +27,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AppComponent,
     HomeComponent,
     UpdateDialogComponent,
-    DeleteDialogComponent
+    DeleteDialogComponent,
+    CreateDialogComponent
   ],
   imports: [
     BrowserModule,

@@ -3,7 +3,7 @@ import { Teacher } from './teacher';
 import { Course } from './course';
 
 export interface School {
-  id: number;
+  id?: number;
   name: string;
   address: string;
   students: Student[];

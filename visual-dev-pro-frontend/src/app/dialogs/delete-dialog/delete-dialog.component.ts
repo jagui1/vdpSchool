@@ -28,8 +28,7 @@ export class DeleteDialogComponent {
   }
 
   onSubmit() {
-    let schoolId = this.schoolToDelete.id;
-    this.schoolService.deleteSchool(schoolId).subscribe({
+    this.schoolService.deleteSchool(this.schoolToDelete).subscribe({
       next: (data) => {
         console.log(data);
       },
