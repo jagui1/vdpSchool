@@ -153,10 +153,6 @@ static async Task<IResult> UpdateSchool(int id, School updatedSchool, SchoolDbCo
     school.Name = updatedSchool.Name;
     school.Address = updatedSchool.Address;
 
-    // --- OPTIONAL: update Teachers, Courses, Students manually ---
-    // This depends on how much of your object graph you want to allow updating
-
-    // Example: update existing course names
     foreach (var updatedCourse in updatedSchool.Courses)
     {
         var existingCourse = school.Courses.FirstOrDefault(c => c.Id == updatedCourse.Id);
@@ -164,7 +160,6 @@ static async Task<IResult> UpdateSchool(int id, School updatedSchool, SchoolDbCo
             existingCourse.CourseName = updatedCourse.CourseName;
     }
 
-    // Example: update teacher names
     foreach (var updatedTeacher in updatedSchool.Teachers)
     {
         var existingTeacher = school.Teachers.FirstOrDefault(t => t.Id == updatedTeacher.Id);
