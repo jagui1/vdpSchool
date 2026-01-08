@@ -8,7 +8,8 @@ builder.Services.AddCors(options =>
     options.AddPolicy("FrontendPolicy",
         policy =>
         {
-            policy.WithOrigins("http://localhost:4200")
+            policy.WithOrigins("http://localhost:4200",
+                               "https://lemon-smoke-04e0e8b10.1.azurestaticapps.net")
                                 .AllowAnyHeader()
                                 .AllowAnyMethod();
         });
