@@ -4,9 +4,6 @@ import { SchoolService } from '../services/school.service';
 import { School } from '../interfaces/school';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { UpdateDialogComponent } from '../dialogs/update-dialog/update-dialog.component';
-import { DeleteDialogComponent } from '../dialogs/delete-dialog/delete-dialog.component';
-import { CreateDialogComponent } from '../dialogs/create-dialog/create-dialog.component';
 import { Course } from '../interfaces/course';
 
 @Component({
@@ -18,6 +15,7 @@ export class CoursesComponent implements OnInit {
 
     schoolId!: number;
     schoolName!: string;
+    schoolAddress!: string;
 
     dataSource = new MatTableDataSource<Course>([]);
   
@@ -31,40 +29,15 @@ export class CoursesComponent implements OnInit {
   }
 
   onUpdate(school: School) {
-    let dialogRef = this.dialog.open(UpdateDialogComponent, {
-      height: '500px',
-      width: '500px',
-      data: school,
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.updateDataSource();
-    });
+    // TODO 
   }
 
   onDelete(school: School) {
-    let dialogRef = this.dialog.open(DeleteDialogComponent, {
-      height: '500px',
-      width: '500px',
-      data: school,
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.updateDataSource();
-    });
+    // TODO
   }
 
   onCreate(){
-    let dialogRef = this.dialog.open(CreateDialogComponent, {
-      height: '500px',
-      width: '500px',
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if(result){
-        this.updateDataSource();
-      }
-    });
+    // TODO
   }
 
   updateDataSource() {
@@ -73,6 +46,7 @@ export class CoursesComponent implements OnInit {
         console.log(data.courses);
         this.dataSource.data = data.courses;
         this.schoolName = data.name ? data.name : "Cannot find School Name";
+        this.schoolAddress = data.address ? data.address : "Cannot find School Address";
         console.log(this.dataSource);
       },
       error: (err) => {

@@ -36,9 +36,9 @@ using (var scope = app.Services.CreateScope())
 
     if (!context.Schools.Any())
     {
-        var businessCourse = new Course { CourseName = "Business" };
-        var csharpCourse = new Course { CourseName = "C#" };
-        var angularCourse = new Course { CourseName = "Angular" };
+        var businessCourse = new Course { CourseName = "Business 101" };
+        var csharpCourse = new Course { CourseName = "C# 101" };
+        var angularCourse = new Course { CourseName = "Angular 101" };
 
         var teacherMurphy = new Teacher
         {
@@ -75,6 +75,34 @@ using (var scope = app.Services.CreateScope())
 
 
         context.Schools.Add(school);
+
+        businessCourse = new Course { CourseName = "Business 201" };
+        csharpCourse = new Course { CourseName = "C# 201" };
+        angularCourse = new Course { CourseName = "Angular 201" };
+
+        teacherMurphy = new Teacher
+        {
+            FullName = "Senor Murphy",
+            Email = "murphy@ehs.edu",
+            Subject = "Computer Science",
+            CoursesTaught = { csharpCourse, angularCourse }
+        };
+
+        teacherBaltimore = new Teacher
+        {
+            FullName = "Senor Baltimore",
+            Email = "baltimore@ehs.edu",
+            Subject = "Business",
+            CoursesTaught = { businessCourse }
+        };
+
+        studentJeremy = new Student
+        {
+            FullName = "Jeremy B",
+            Email = "agui1@ehs.edu",
+            GradeLevel = 17,
+            EnrolledCourses = { businessCourse, csharpCourse, angularCourse }
+        };
 
         school = new School
         {
