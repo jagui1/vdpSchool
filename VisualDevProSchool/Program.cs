@@ -132,6 +132,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+app.UseHttpsRedirection();
 app.UseCors("FrontendPolicy");
 
 var vdpSchool = app.MapGroup("/vdpschool");
