@@ -10,7 +10,7 @@ on:
       - main
 
 env:
-  AZURE_WEBAPP_NAME: vdp-school-service
+  AZURE_WEBAPP_NAME: vdpschool
   AZURE_WEBAPP_PACKAGE_PATH: "./VisualDevProSchool/publish"
   DOTNET_VERSION: 10.x
   SOLUTION_PATH: "vdpSchool.sln"
