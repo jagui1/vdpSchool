@@ -1,5 +1,4 @@
 export const environment = {
   production: true,
-  // served from backend 
-  apiUrl: ''
+  apiUrl: 'https://vdpschool.azurewebsites.net/vdpschool'
 };
