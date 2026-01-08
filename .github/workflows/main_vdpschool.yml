@@ -29,9 +29,6 @@ jobs:
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
-      - name: List files to verify publish
-        run: ls -R ${{env.DOTNET_ROOT}}/myapp
-
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
@@ -54,9 +51,9 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_E22346DA593E400DBD48F752FB41BE23 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_44F3B4408D5E4082AA0116454133D61B }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_35C3D3E5DAA246A7B2D9A591F7749D23 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_EDF5029E14884A74B10EEDCE3B767754 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_671AFBFE73EA4B70B851F23B9E5B2040 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_D825737911BB4459BCD4152DC26A7782 }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
@@ -64,5 +61,5 @@ jobs:
         with:
           app-name: 'vdpschool'
           slot-name: 'Production'
-          package: ${{env.DOTNET_ROOT}}/myapp
+          package: .
           
