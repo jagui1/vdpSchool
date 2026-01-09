@@ -2,19 +2,28 @@
 
 A simple full-stack CRUD web application built to demonstrate object-oriented design principles, RESTful API development, environment-based configuration, frontend–backend integration using Angular and C# (.NET), and CI/CD using GitHub Actions.
 
-This project models a basic school domain, allowing users to manage entities such as students, teachers, and classes through a web interface hosted on modern cloud-hosted architecture.
+This project models real-world school relationships using object-oriented principles, allowing users to manage entities such as students, teachers, and classes through a web interface hosted on modern cloud-hosted architecture.
 
-The application consists of:
+## Tech stack
 
-- Frontend: Angular SPA
-  - Deployed with Azure Static Web Apps
+- Frontend: Angular 16 SPA
+  - MatTable for listing schools, students, teachers, and courses
+  - Reactive Forms for create/update/delete operations
+  - Dialog-based UI for editing and deleting entities
+  - HTTPClient services for API communication
+  - Environment-based API url configuration for local vs cloud environments
+  - Deployed with Azure Static Web Apps: [link to lemon smoke](https://lemon-smoke-04e0e8b10.1.azurestaticapps.net/)
   - Future improvement would be to add a custom domain to overwrite the random generated name Azure provides
-  - https://lemon-smoke-04e0e8b10.1.azurestaticapps.net/
 
 - Backend: ASP.NET Core Web API
-  - Deployed with Azure App Service
+  - Minimal API with RESTful endpoints for School CRUD operations
   - Utilizes swagger for testing endpoints
-  - https://vdpschool.azurewebsites.net/swagger/index.html
+  - CORS configuration to allow Angular frontend access
+  - Data seeding Entity Framework Core with relationships
+    - School → Students, Teachers, Courses
+    - Teacher ↔ Courses (teaches)
+    - Student ↔ Courses (enrolled)
+  - Deployed with Azure App Service: [link to vdpschool](https://vdpschool.azurewebsites.net/swagger/index.html)
 
 - Data: Entity Framework Core with the In-Memory database provider
   - Chosen for faster development iteration and keeping infrastructure simple while validating application logic
@@ -23,8 +32,9 @@ The application consists of:
 
 - CI/CD: GitHub Actions (both frontend and backend builds triggered by any push to main)
 
-The goal of this project is to demonstrate:
+## Purpose
 
+The goal of this project is to demonstrate:
 - Clean separation of concerns
 - Basic CRUD operations
 - Practical application of OOP concepts
