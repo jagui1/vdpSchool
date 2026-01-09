@@ -8,6 +8,7 @@ The application consists of:
 
 - Frontend: Angular SPA
   - Deployed with Azure Static Web Apps
+  - Future improvement would be to add a custom domain to overwrite the random generated name Azure provides
   - https://lemon-smoke-04e0e8b10.1.azurestaticapps.net/
 
 - Backend: ASP.NET Core Web API
