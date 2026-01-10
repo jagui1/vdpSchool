@@ -135,11 +135,14 @@ app.UseCors("FrontendPolicy");
 var vdpSchool = app.MapGroup("/vdpschool");
 
 app.MapGet("/", () => "Hello Cruel World!");
+// School APIs
 vdpSchool.MapGet("/schools/", GetAllSchools);
 vdpSchool.MapPost("/schools", CreateSchool);
 vdpSchool.MapGet("/schools/{id}", GetSchool);
 vdpSchool.MapPut("schools/{id}", UpdateSchool);
 vdpSchool.MapDelete("schools/{id}", DeleteSchool);
+//Course APIs
+vdpSchool.MapGet("/courses/", GetAllCourses);
 
 app.Run();
 
@@ -224,4 +227,10 @@ static async Task<IResult> DeleteSchool(int id, SchoolDbContext db)
     }
 
     return TypedResults.NotFound();
+}
+
+static async Task<IResult> GetAllCourses(SchoolDbContext db) {
+    var courses = await db.Courses.ToArrayAsync();
+
+    return TypedResults.Ok(courses);
 }
