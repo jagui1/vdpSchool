@@ -20,7 +20,7 @@ export class CoursesComponent implements OnInit {
 
     dataSource = new MatTableDataSource<Course>([]);
   
-    columnsToDisplay = ['name', 'Update', 'Delete'];
+    columnsToDisplay = ['name', 'credits', 'Update', 'Delete'];
   
     constructor(private route: ActivatedRoute, private schoolService: SchoolService, private courseService: CourseService, private dialog: MatDialog) {}
 
@@ -29,8 +29,19 @@ export class CoursesComponent implements OnInit {
       this.updateDataSource();
   }
 
-  onUpdate(course: Course) {
-    // TODO 
+  onUpdate(courseToUpdate: Course) {
+    this.courseService.updateCourse(courseToUpdate).subscribe({
+      next: (data) => {
+        console.log(data);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+      complete: () => {
+        console.log('Course updated successfully');
+        this.updateDataSource();
+      }
+    });  
   }
 
   onDelete(courseToDelete: Course) {

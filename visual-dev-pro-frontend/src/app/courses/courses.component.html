@@ -7,6 +7,11 @@
         <td mat-cell *matCellDef="let course"> {{course.courseName}} </td>
     </ng-container>
 
+    <ng-container matColumnDef="credits">
+        <th mat-header-cell *matHeaderCellDef> Credits </th>
+        <td mat-cell *matCellDef="let course"> {{course.credits}} </td>
+    </ng-container>
+
     <ng-container matColumnDef="Update">
         <th mat-header-cell *matHeaderCellDef> Edit Course </th>
         <td mat-cell *matCellDef="let course">

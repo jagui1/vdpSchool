@@ -28,13 +28,13 @@ export class CourseService {
   //   return this.http.post<Course>(this.api, newCourse);
   // }
 
-  // updateCourse(updateCourse: Course) {
-  //   if(!updateCourse.id) {
-  //     throw new Error('Course ID not provided: ID is required for update.');
-  //   }
+  updateCourse(updateCourse: Course) {
+    if(!updateCourse.id) {
+      throw new Error('Course ID not provided: ID is required for update.');
+    }
 
-  //   return this.http.put<Course>(`${this.api}/${updateCourse.id}`, updateCourse);
-  // }
+    return this.http.put<Course>(`${this.api}/${updateCourse.id}`, updateCourse);
+  }
 
   deleteCourse(courseToDelete: Course) {
     if(!courseToDelete.id) {

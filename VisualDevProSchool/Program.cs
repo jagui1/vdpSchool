@@ -37,9 +37,9 @@ using (var scope = app.Services.CreateScope())
 
     if (!context.Schools.Any())
     {
-        var businessCourse = new Course { CourseName = "Business 101" };
-        var csharpCourse = new Course { CourseName = "C# 101" };
-        var angularCourse = new Course { CourseName = "Angular 101" };
+        var businessCourse = new Course { CourseName = "Business 101", Credits = 3 };
+        var csharpCourse = new Course { CourseName = "C# 101", Credits = 4 };
+        var angularCourse = new Course { CourseName = "Angular 101", Credits = 3 };
 
         var teacherMurphy = new Teacher
         {
@@ -77,9 +77,9 @@ using (var scope = app.Services.CreateScope())
 
         context.Schools.Add(school);
 
-        businessCourse = new Course { CourseName = "Business 201" };
-        csharpCourse = new Course { CourseName = "C# 201" };
-        angularCourse = new Course { CourseName = "Angular 201" };
+        businessCourse = new Course { CourseName = "Business 201", Credits = 3 };
+        csharpCourse = new Course { CourseName = "C# 201", Credits = 4 };
+        angularCourse = new Course { CourseName = "Angular 201", Credits = 3};
 
         teacherMurphy = new Teacher
         {
@@ -144,6 +144,7 @@ vdpSchool.MapDelete("schools/{id}", DeleteSchool);
 //Course APIs
 vdpSchool.MapGet("/courses/", GetAllCourses);
 vdpSchool.MapDelete("courses/{id}", DeleteCourse);
+vdpSchool.MapPut("courses/{id}", UpdateCourse);
 
 app.Run();
 
@@ -234,6 +235,24 @@ static async Task<IResult> GetAllCourses(SchoolDbContext db) {
     var courses = await db.Courses.ToArrayAsync();
 
     return TypedResults.Ok(courses);
+}
+
+static async Task<IResult> UpdateCourse(int id, Course updatedCourse, SchoolDbContext db)
+{
+    var course = await db.Courses
+        .FirstOrDefaultAsync(s => s.Id == id);
+
+    if (course == null)
+        return TypedResults.NotFound();
+
+    // Update scalar properties
+    course.CourseName = updatedCourse.CourseName;
+    course.Credits = updatedCourse.Credits;
+
+    // Save changes
+    await db.SaveChangesAsync();
+
+    return TypedResults.Ok(course);
 }
 
 static async Task<IResult> DeleteCourse(int id, SchoolDbContext db)
