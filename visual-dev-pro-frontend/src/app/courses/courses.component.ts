@@ -4,6 +4,7 @@ import { SchoolService } from '../services/school.service';
 import { School } from '../interfaces/school';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
+import { CourseService } from '../services/course.service';
 import { Course } from '../interfaces/course';
 
 @Component({
@@ -21,19 +22,30 @@ export class CoursesComponent implements OnInit {
   
     columnsToDisplay = ['name', 'Update', 'Delete'];
   
-    constructor(private route: ActivatedRoute, private schoolService: SchoolService, private dialog: MatDialog) {}
+    constructor(private route: ActivatedRoute, private schoolService: SchoolService, private courseService: CourseService, private dialog: MatDialog) {}
 
     ngOnInit() {
       this.schoolId = Number(this.route.snapshot.paramMap.get('id'));
       this.updateDataSource();
   }
 
-  onUpdate(school: School) {
+  onUpdate(course: Course) {
     // TODO 
   }
 
-  onDelete(school: School) {
-    // TODO
+  onDelete(courseToDelete: Course) {
+    this.courseService.deleteCourse(courseToDelete).subscribe({
+      next: (data) => {
+        console.log(data);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+      complete: () => {
+        console.log('Course deleted successfully');
+        this.updateDataSource();
+      }
+    });
   }
 
   onCreate(){
