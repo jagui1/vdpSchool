@@ -143,6 +143,7 @@ vdpSchool.MapPut("schools/{id}", UpdateSchool);
 vdpSchool.MapDelete("schools/{id}", DeleteSchool);
 //Course APIs
 vdpSchool.MapGet("/courses/", GetAllCourses);
+vdpSchool.MapPost("/courses", CreateCourse);
 vdpSchool.MapDelete("courses/{id}", DeleteCourse);
 vdpSchool.MapPut("courses/{id}", UpdateCourse);
 
@@ -236,6 +237,14 @@ static async Task<IResult> GetAllCourses(SchoolDbContext db) {
 
     return TypedResults.Ok(courses);
 }
+
+static async Task<IResult> CreateCourse(Course course, SchoolDbContext db) {
+    db.Courses.Add(course);
+    await db.SaveChangesAsync();
+
+    return TypedResults.Created($"/courses/{course.Id}", course);
+}
+
 
 static async Task<IResult> UpdateCourse(int id, Course updatedCourse, SchoolDbContext db)
 {
