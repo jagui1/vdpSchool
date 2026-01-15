@@ -144,8 +144,12 @@ vdpSchool.MapDelete("schools/{id}", DeleteSchool);
 //Course APIs
 vdpSchool.MapGet("/courses/", GetAllCourses);
 vdpSchool.MapPost("/courses", CreateCourse);
-vdpSchool.MapDelete("courses/{id}", DeleteCourse);
 vdpSchool.MapPut("courses/{id}", UpdateCourse);
+vdpSchool.MapDelete("courses/{id}", DeleteCourse);
+//Student APIs
+vdpSchool.MapDelete("students/{id}", DeleteStudent);
+//Teacher APIs
+vdpSchool.MapDelete("teachers/{id}", DeleteTeacher);
 
 app.Run();
 
@@ -269,6 +273,30 @@ static async Task<IResult> DeleteCourse(int id, SchoolDbContext db)
     if (await db.Courses.FindAsync(id) is Course course)
     {
         db.Courses.Remove(course);
+        await db.SaveChangesAsync();
+        return TypedResults.NoContent();
+    }
+
+    return TypedResults.NotFound();
+}
+
+static async Task<IResult> DeleteStudent(int id, SchoolDbContext db)
+{
+    if (await db.Students.FindAsync(id) is Student student)
+    {
+        db.Students.Remove(student);
+        await db.SaveChangesAsync();
+        return TypedResults.NoContent();
+    }
+
+    return TypedResults.NotFound();
+}
+
+static async Task<IResult> DeleteTeacher(int id, SchoolDbContext db)
+{
+    if (await db.Teachers.FindAsync(id) is Teacher teacher)
+    {
+        db.Teachers.Remove(teacher);
         await db.SaveChangesAsync();
         return TypedResults.NoContent();
     }

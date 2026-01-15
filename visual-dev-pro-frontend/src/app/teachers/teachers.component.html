@@ -27,7 +27,7 @@
     <ng-container matColumnDef="Delete">
         <th mat-header-cell *matHeaderCellDef> Delete Teacher </th>
         <td mat-cell *matCellDef="let teacher">
-            <button mat-raised-button color="warn" [disabled]="true">Delete</button>
+            <button mat-raised-button color="warn" (click)="onDelete(teacher)">Delete</button>
         </td>
     </ng-container>
 

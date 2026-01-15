@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { CourseService } from '../services/course.service';
 import { Course } from '../interfaces/course';
+import { DeleteDialogComponent } from '../dialogs/delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'app-courses',
@@ -45,16 +46,32 @@ export class CoursesComponent implements OnInit {
   }
 
   onDelete(courseToDelete: Course) {
-    this.courseService.deleteCourse(courseToDelete).subscribe({
-      next: (data) => {
-        console.log(data);
+    let dialogRef = this.dialog.open(DeleteDialogComponent, {
+      height: '500px',
+      width: '500px',
+      data: {
+        title: 'Delete Course',
+        fields: [
+          { label: 'Name', value: courseToDelete.courseName },
+          { label: 'Credits', value: courseToDelete.credits }
+        ]
       },
-      error: (err) => {
-        console.log(err);
-      },
-      complete: () => {
-        console.log('Course deleted successfully');
-        this.updateDataSource();
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.courseService.deleteCourse(courseToDelete).subscribe({
+          next: (data) => {
+            console.log(data);
+          },
+          error: (err) => {
+            console.log(err);
+          },
+          complete: () => {
+            console.log('Course deleted successfully');
+            this.updateDataSource();
+          }
+        });
       }
     });
   }

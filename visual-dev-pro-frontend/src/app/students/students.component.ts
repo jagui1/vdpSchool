@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 import { SchoolService } from '../services/school.service';
+import { StudentService } from '../services/student.service';
 import { School } from '../interfaces/school';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Student } from '../interfaces/student';
+import { DeleteDialogComponent } from '../dialogs/delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'app-students',
@@ -21,19 +23,47 @@ export class StudentsComponent implements OnInit {
   
     columnsToDisplay = ['name', 'email', 'gradeLevel', 'Update', 'Delete'];
   
-    constructor(private route: ActivatedRoute, private schoolService: SchoolService, private dialog: MatDialog) {}
+    constructor(private route: ActivatedRoute, private schoolService: SchoolService, private studentService: StudentService, private dialog: MatDialog) {}
 
     ngOnInit() {
       this.schoolId = Number(this.route.snapshot.paramMap.get('id'));
       this.updateDataSource();
   }
 
-  onUpdate(school: School) {
+  onUpdate(studentToUpdate: Student) {
     // TODO 
   }
 
-  onDelete(school: School) {
-    // TODO
+  onDelete(studentToDelete: Student) {
+    let dialogRef = this.dialog.open(DeleteDialogComponent, {
+      height: '500px',
+      width: '500px',
+      data: {
+        title: 'Delete Student',
+        fields: [
+          { label: 'Name', value: studentToDelete.fullName },
+          { label: 'Email', value: studentToDelete.email },
+          { label: 'Grade', value: studentToDelete.gradeLevel }
+        ]
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        this.studentService.deleteStudent(studentToDelete).subscribe({
+          next: (data) => {
+            console.log(data);
+          },
+          error: (err) => {
+            console.log(err);
+          },
+          complete: () => {
+            console.log('Student deleted successfully');
+            this.updateDataSource();
+          }
+        });
+      }
+    });
   }
 
   onCreate(){

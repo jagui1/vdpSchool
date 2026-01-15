@@ -40,11 +40,30 @@ export class HomeComponent implements OnInit {
     let dialogRef = this.dialog.open(DeleteDialogComponent, {
       height: '500px',
       width: '500px',
-      data: school,
+      data: {
+        title: 'Delete School',
+        fields: [
+          { label: 'Name', value: school.name },
+          { label: 'Address', value: school.address }
+        ]
+      },
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.updateDataSource();
+      if(result){
+        this.schoolService.deleteSchool(school).subscribe({
+          next: (data) => {
+            console.log(data);
+          },
+          error: (err) => {
+            console.log(err);
+          },
+          complete: () => {
+            console.log('School deleted successfully');
+            this.updateDataSource();
+          }
+        });
+      }
     });
   }
 

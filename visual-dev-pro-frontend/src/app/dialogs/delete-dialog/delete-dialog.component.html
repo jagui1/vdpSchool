@@ -1,17 +1,12 @@
 <div id="deleteForm">
 
-    <h1 id="deleteSchoolTitle">Delete School</h1>
+    <h1 id="deleteSchoolTitle">{{ data.title }}</h1>
     <form [formGroup]="deleteForm" (ngSubmit)="onSubmit()" class="myform">
 
         <div class="myInputs">
-            <mat-form-field class="example-full-width">
-                <mat-label class="formInput">Name</mat-label>
-                <input class="formInput" matInput formControlName="name">
-            </mat-form-field>
-
-            <mat-form-field class="example-full-width">
-                <mat-label class="formInput">Address</mat-label>
-                <input class="formInput" matInput formControlName="address">
+            <mat-form-field class="example-full-width" *ngFor="let field of data.fields">
+                <mat-label class="formInput">{{ field.label }}</mat-label>
+                <input class="formInput" matInput [formControlName]="field.label">
             </mat-form-field>
         </div>
 

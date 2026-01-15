@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { School } from '../../interfaces/school';
 import { SchoolService } from 'src/app/services/school.service';
+import { DeleteDialogData } from 'src/app/interfaces/delete-dialog-data';
 
 @Component({
   selector: 'app-delete-dialog',
@@ -11,35 +12,25 @@ import { SchoolService } from 'src/app/services/school.service';
 })
 export class DeleteDialogComponent {
 
-  schoolToDelete!: School;
+  deleteForm!: FormGroup;
 
-  deleteForm = new FormGroup({
-    name: new FormControl({ value: '', disabled: true }),
-    address: new FormControl({ value: '', disabled: true }),
-  });
-
-  constructor(public dialogRef: MatDialogRef<DeleteDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: School, private schoolService: SchoolService) {
-    this.schoolToDelete = data;
-  }
+  constructor(public dialogRef: MatDialogRef<DeleteDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: DeleteDialogData) {}
 
   ngOnInit() {
-    this.deleteForm.controls['name'].setValue(this.schoolToDelete.name);
-    this.deleteForm.controls['address'].setValue(this.schoolToDelete.address);
+    const controls: Record<string, FormControl> = {};
+
+    this.data.fields.forEach(field => {
+      controls[field.label] = new FormControl({
+        value: field.value,
+        disabled: true
+      });
+    });
+
+    this.deleteForm = new FormGroup(controls);
   }
 
   onSubmit() {
-    this.schoolService.deleteSchool(this.schoolToDelete).subscribe({
-      next: (data) => {
-        console.log(data);
-      },
-      error: (err) => {
-        console.log(err);
-      },
-      complete: () => {
-        console.log('School deleted successfully');
-        this.dialogRef.close(true);
-      }
-    });
+    this.dialogRef.close(true);
   }
 
 }
