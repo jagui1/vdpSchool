@@ -147,8 +147,10 @@ vdpSchool.MapPost("/courses", CreateCourse);
 vdpSchool.MapPut("courses/{id}", UpdateCourse);
 vdpSchool.MapDelete("courses/{id}", DeleteCourse);
 //Student APIs
+vdpSchool.MapPut("students/{id}", UpdateStudent);
 vdpSchool.MapDelete("students/{id}", DeleteStudent);
 //Teacher APIs
+vdpSchool.MapPut("teachers/{id}", UpdateTeacher);
 vdpSchool.MapDelete("teachers/{id}", DeleteTeacher);
 
 app.Run();
@@ -280,6 +282,25 @@ static async Task<IResult> DeleteCourse(int id, SchoolDbContext db)
     return TypedResults.NotFound();
 }
 
+static async Task<IResult> UpdateStudent(int id, Student updatedStudent, SchoolDbContext db)
+{
+    var student = await db.Students
+        .FirstOrDefaultAsync(s => s.Id == id);
+
+    if (student == null)
+        return TypedResults.NotFound();
+
+    // Update scalar properties
+    student.FullName = updatedStudent.FullName;
+    student.Email = updatedStudent.Email;
+    student.GradeLevel = updatedStudent.GradeLevel;
+
+    // Save changes
+    await db.SaveChangesAsync();
+
+    return TypedResults.Ok(student);
+}
+
 static async Task<IResult> DeleteStudent(int id, SchoolDbContext db)
 {
     if (await db.Students.FindAsync(id) is Student student)
@@ -290,6 +311,25 @@ static async Task<IResult> DeleteStudent(int id, SchoolDbContext db)
     }
 
     return TypedResults.NotFound();
+}
+
+static async Task<IResult> UpdateTeacher(int id, Teacher updatedTeacher, SchoolDbContext db)
+{
+    var teacher = await db.Teachers
+        .FirstOrDefaultAsync(s => s.Id == id);
+
+    if (teacher == null)
+        return TypedResults.NotFound();
+
+    // Update scalar properties
+    teacher.FullName = updatedTeacher.FullName;
+    teacher.Email = updatedTeacher.Email;
+    teacher.Subject = updatedTeacher.Subject;
+
+    // Save changes
+    await db.SaveChangesAsync();
+
+    return TypedResults.Ok(teacher);
 }
 
 static async Task<IResult> DeleteTeacher(int id, SchoolDbContext db)

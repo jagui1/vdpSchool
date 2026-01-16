@@ -28,13 +28,13 @@ export class StudentService {
   //   return this.http.post<Student>(this.api, newStudent);
   // }
 
-  // updateStudent(updateStudent: Student) {
-  //   if(!updateStudent.id) {
-  //     throw new Error('Student ID not provided: ID is required for update.');
-  //   }
+  updateStudent(studentToUpdate: Student) {
+    if(!studentToUpdate.id) {
+      throw new Error('Student ID not provided: ID is required for update.');
+    }
 
-  //   return this.http.put<Student>(`${this.api}/${updateStudent.id}`, updateStudent);
-  // }
+    return this.http.put<Student>(`${this.api}/${studentToUpdate.id}`, studentToUpdate);
+  }
 
   deleteStudent(studentToDelete: Student) {
     if(!studentToDelete.id) {

@@ -28,13 +28,13 @@ export class TeacherService {
   //   return this.http.post<Teacher>(this.api, newTeacher);
   // }
 
-  // updateTeacher(updateTeacher: Teacher) {
-  //   if(!updateTeacher.id) {
-  //     throw new Error('Teacher ID not provided: ID is required for update.');
-  //   }
+  updateTeacher(teacherToUpdate: Teacher) {
+    if(!teacherToUpdate.id) {
+      throw new Error('Teacher ID not provided: ID is required for update.');
+    }
 
-  //   return this.http.put<Teacher>(`${this.api}/${updateTeacher.id}`, updateTeacher);
-  // }
+    return this.http.put<Teacher>(`${this.api}/${teacherToUpdate.id}`, teacherToUpdate);
+  }
 
   deleteTeacher(teacherToDelete: Teacher) {
     if(!teacherToDelete.id) {

@@ -15,7 +15,7 @@
     <ng-container matColumnDef="Update">
         <th mat-header-cell *matHeaderCellDef> Edit Course </th>
         <td mat-cell *matCellDef="let course">
-            <button mat-raised-button color="primary" [disabled]="true">Edit</button>
+            <button mat-raised-button color="primary" (click)="onUpdate(course)">Edit</button>
         </td>
     </ng-container>
 

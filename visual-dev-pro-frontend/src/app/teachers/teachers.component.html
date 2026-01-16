@@ -20,7 +20,7 @@
     <ng-container matColumnDef="Update">
         <th mat-header-cell *matHeaderCellDef> Edit Teacher </th>
         <td mat-cell *matCellDef="let teacher">
-            <button mat-raised-button color="primary" [disabled]="true">Edit</button>
+            <button mat-raised-button color="primary" (click)="onUpdate(teacher)">Edit</button>
         </td>
     </ng-container>
 

@@ -7,6 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { CourseService } from '../services/course.service';
 import { Course } from '../interfaces/course';
 import { DeleteDialogComponent } from '../dialogs/delete-dialog/delete-dialog.component';
+import { UpdateDialogComponent } from '../dialogs/update-dialog/update-dialog.component';
 
 @Component({
   selector: 'app-courses',
@@ -31,16 +32,35 @@ export class CoursesComponent implements OnInit {
   }
 
   onUpdate(courseToUpdate: Course) {
-    this.courseService.updateCourse(courseToUpdate).subscribe({
-      next: (data) => {
-        console.log(data);
+    let dialogRef = this.dialog.open(UpdateDialogComponent, {
+      height: '500px',
+      width: '500px',
+      data: {
+        title: 'Update Course',
+        fields: [
+          { label: 'Name', value: courseToUpdate.courseName },
+          { label: 'Credits', value: courseToUpdate.credits, type: 'number' }
+        ]
       },
-      error: (err) => {
-        console.log(err);
-      },
-      complete: () => {
-        console.log('Course updated successfully');
-        this.updateDataSource();
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        courseToUpdate.courseName = result.Name as string;
+        courseToUpdate.credits = result.Credits as number;
+
+        this.courseService.updateCourse(courseToUpdate).subscribe({
+          next: (data) => {
+            console.log(data);
+          },
+          error: (err) => {
+            console.log(err);
+          },
+          complete: () => {
+            console.log('Course updated successfully');
+            this.updateDataSource();
+          }
+        });
       }
     });  
   }

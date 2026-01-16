@@ -3,5 +3,6 @@ export interface DialogData {
   fields: {
     label: string;
     value: string;
+    type: string;
   }[];
 }

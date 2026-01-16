@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Teacher } from '../interfaces/teacher';
 import { DeleteDialogComponent } from '../dialogs/delete-dialog/delete-dialog.component';
+import { UpdateDialogComponent } from '../dialogs/update-dialog/update-dialog.component';
 
 @Component({
   selector: 'app-teachers',
@@ -30,8 +31,40 @@ export class TeachersComponent implements OnInit {
       this.updateDataSource();
   }
 
-  onUpdate(teacher: Teacher) {
-    // TODO 
+  onUpdate(teacherToUpdate: Teacher) {
+    let dialogRef = this.dialog.open(UpdateDialogComponent, {
+      height: '500px',
+      width: '500px',
+      data: {
+        title: 'Update Teacher',
+        fields: [
+          { label: 'Name', value: teacherToUpdate.fullName },
+          { label: 'Email', value: teacherToUpdate.email },
+          { label: 'Subject', value: teacherToUpdate.subject }
+        ]
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        teacherToUpdate.fullName = result.Name as string;
+        teacherToUpdate.email = result.Email as string;
+        teacherToUpdate.subject = result.Subject as string;
+
+        this.teacherService.updateTeacher(teacherToUpdate).subscribe({
+          next: (data) => {
+            console.log(data);
+          },
+          error: (err) => {
+            console.log(err);
+          },
+          complete: () => {
+            console.log('Teacher updated successfully');
+            this.updateDataSource();
+          }
+        });
+      }
+    });
   }
 
   onDelete(teacherToDelete: Teacher) {
