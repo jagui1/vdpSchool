@@ -1,9 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { School } from '../../interfaces/school';
-import { SchoolService } from 'src/app/services/school.service';
-import { DeleteDialogData } from 'src/app/interfaces/delete-dialog-data';
+import { DialogData } from 'src/app/interfaces/dialog-data';
 
 @Component({
   selector: 'app-delete-dialog',
@@ -14,7 +12,7 @@ export class DeleteDialogComponent {
 
   deleteForm!: FormGroup;
 
-  constructor(public dialogRef: MatDialogRef<DeleteDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: DeleteDialogData) {}
+  constructor(public dialogRef: MatDialogRef<DeleteDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
 
   ngOnInit() {
     const controls: Record<string, FormControl> = {};

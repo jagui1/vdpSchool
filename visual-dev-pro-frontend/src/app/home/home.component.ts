@@ -24,34 +24,58 @@ export class HomeComponent implements OnInit {
     this.updateDataSource();
   }
 
-  onUpdate(school: School) {
+  onUpdate(schoolToUpdate: School) {
     let dialogRef = this.dialog.open(UpdateDialogComponent, {
       height: '500px',
       width: '500px',
-      data: school,
+      data: {
+        title: 'Update School',
+        fields: [
+          { label: 'Name', value: schoolToUpdate.name },
+          { label: 'Address', value: schoolToUpdate.address }
+        ]
+      },
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.updateDataSource();
+      if (result) {
+        schoolToUpdate.name = result.Name as string;
+        schoolToUpdate.address = result.Address as string;
+        console.log("School to update");
+        console.log(schoolToUpdate);
+
+        this.schoolService.updateSchool(schoolToUpdate).subscribe({
+          next: (data) => {
+            console.log(data);
+          },
+          error: (err) => {
+            console.log(err);
+          },
+          complete: () => {
+            console.log('School updated successfully');
+            this.updateDataSource();
+          }
+        });
+      }
     });
   }
 
-  onDelete(school: School) {
+  onDelete(schoolToDelete: School) {
     let dialogRef = this.dialog.open(DeleteDialogComponent, {
       height: '500px',
       width: '500px',
       data: {
         title: 'Delete School',
         fields: [
-          { label: 'Name', value: school.name },
-          { label: 'Address', value: school.address }
+          { label: 'Name', value: schoolToDelete.name },
+          { label: 'Address', value: schoolToDelete.address }
         ]
       },
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this.schoolService.deleteSchool(school).subscribe({
+        this.schoolService.deleteSchool(schoolToDelete).subscribe({
           next: (data) => {
             console.log(data);
           },

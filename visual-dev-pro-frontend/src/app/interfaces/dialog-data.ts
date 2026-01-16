@@ -1,6 +1,5 @@
-export interface DeleteDialogData {
+export interface DialogData {
   title: string;
-  entityName: string;
   fields: {
     label: string;
     value: string;
