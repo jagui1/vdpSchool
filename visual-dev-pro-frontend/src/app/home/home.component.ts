@@ -95,11 +95,37 @@ export class HomeComponent implements OnInit {
     let dialogRef = this.dialog.open(CreateDialogComponent, {
       height: '500px',
       width: '500px',
+      data: {
+        title: 'Create School',
+        fields: [
+          { label: 'Name', value: '' },
+          { label: 'Address', value: '' }
+        ]
+      },
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this.updateDataSource();
+
+        this.schoolService.createSchool({
+          name: result.Name as string,
+          address: result.Address as string,
+          students: [],
+          teachers: [],
+          courses: []
+        }).subscribe({
+
+          next: (data) => {
+            console.log(data);
+          },
+          error: (err) => {
+            console.log(err);
+          },
+          complete: () => {
+            console.log('School updated successfully');
+            this.updateDataSource();
+          }
+        });      
       }
     });
   }

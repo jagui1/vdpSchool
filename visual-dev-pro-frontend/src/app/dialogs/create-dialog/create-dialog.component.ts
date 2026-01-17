@@ -1,8 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { School } from '../../interfaces/school';
 import { SchoolService } from 'src/app/services/school.service';
+import { DialogData } from 'src/app/interfaces/dialog-data';
 
 @Component({
   selector: 'app-create-dialog',
@@ -13,39 +14,30 @@ export class CreateDialogComponent implements OnInit {
 
   schoolToCreate!: School;
 
-  createForm = new FormGroup({
-    name: new FormControl('', [Validators.required, Validators.maxLength(50)]),
-    address: new FormControl('', [Validators.required, Validators.maxLength(50)]),
-  });
+  createForm!: FormGroup;
 
-  constructor(public dialogRef: MatDialogRef<CreateDialogComponent>, private schoolService: SchoolService) {  }
+  constructor(public dialogRef: MatDialogRef<CreateDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData) {  }
 
   ngOnInit() {
-    this.createForm.controls['name'];
-    this.createForm.controls['address'];
-    console.log(this.schoolToCreate);
+    const controls: Record<string, FormControl> = {};
+
+    this.data.fields.forEach(field => {
+      let validators: ValidatorFn[] = [Validators.required];
+      
+      if(field.type == 'number'){
+        validators.push(Validators.pattern('^[0-9]*$'));
+      }
+
+      controls[field.label] = new FormControl(
+        { value: field.value, disabled: false },
+        validators
+      );
+    });
+
+    this.createForm = new FormGroup(controls);
   }
 
   onSubmit() {
-    this.schoolToCreate = {
-      name: this.createForm.controls['name'].value as string,
-      address: this.createForm.controls['address'].value as string,
-      students: [],
-      teachers: [],
-      courses: []
-    };
-
-    this.schoolService.createSchool(this.schoolToCreate).subscribe({
-      next: (data) => {
-        console.log(data);
-      },
-      error: (err) => {
-        console.log(err);
-      },
-      complete: () => {
-        console.log('School updated successfully');
-        this.dialogRef.close(true);
-      }
-    });
+    this.dialogRef.close(this.createForm.value);
   }
 }

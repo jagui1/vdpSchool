@@ -18,9 +18,9 @@ export class UpdateDialogComponent implements OnInit {
     const controls: Record<string, FormControl> = {};
 
     this.data.fields.forEach(field => {
-      let validators: ValidatorFn[] = [];
+      let validators: ValidatorFn[] = [Validators.required];
       if(field.type == 'number') {
-        validators.push(Validators.required, Validators.pattern('^[0-9]*$'));
+        validators.push(Validators.pattern('^[0-9]*$'));
       } 
 
       controls[field.label] = new FormControl(
@@ -34,12 +34,5 @@ export class UpdateDialogComponent implements OnInit {
 
   onSubmit() {
     this.dialogRef.close(this.updateForm.value);
-  }
-
-  numberValidator() {
-    return (control: AbstractControl) => {
-      if (control.value === null || control.value === '') return null;
-      return isNaN(control.value) ? { notNumber: true } : null;
-   };
   }
 }
