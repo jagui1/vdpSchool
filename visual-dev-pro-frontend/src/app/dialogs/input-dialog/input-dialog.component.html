@@ -1,7 +1,7 @@
-<div id="createForm">
+<div id="inputForm">
 
-    <h1 id="createTitle">{{ data.title }}</h1>
-    <form [formGroup]="createForm" (ngSubmit)="onSubmit()" class="myform">
+    <h1 id="inputTitle">{{ data.title }} {{ data.entity }}</h1>
+    <form [formGroup]="inputForm" (ngSubmit)="onSubmit()" class="myform">
 
         <div class="myInputs">
             <mat-form-field class="example-full-width" *ngFor="let field of data.fields">
@@ -11,6 +11,6 @@
         </div>
 
         <button class="actionButtons" type="button" mat-dialog-close mat-raised-button color="warn">Cancel</button>
-        <button class="actionButtons" [disabled]="createForm.invalid" type="submit" mat-raised-button color="primary">Create</button>
+        <button class="actionButtons" [disabled]="inputForm.invalid" type="submit" mat-raised-button color="primary">{{data.title}}</button>
     </form>
 </div>

@@ -24,9 +24,9 @@ export class TeacherService {
   //   return this.http.get<Teacher>(`${this.api}/${TeacherId}`);
   // }
 
-  // createTeacher(newTeacher: Teacher) {
-  //   return this.http.post<Teacher>(this.api, newTeacher);
-  // }
+  createTeacher(newTeacher: Teacher) {
+    return this.http.post<Teacher>(this.api, newTeacher);
+  }
 
   updateTeacher(teacherToUpdate: Teacher) {
     if(!teacherToUpdate.id) {

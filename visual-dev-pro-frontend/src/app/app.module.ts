@@ -4,9 +4,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import { UpdateDialogComponent } from './dialogs/update-dialog/update-dialog.component';
 import { DeleteDialogComponent } from './dialogs/delete-dialog/delete-dialog.component';
-import { CreateDialogComponent } from './dialogs/create-dialog/create-dialog.component';
+import { InputDialogComponent } from './dialogs/input-dialog/input-dialog.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -29,9 +28,8 @@ import { CoursesComponent } from './courses/courses.component';
   declarations: [
     AppComponent,
     HomeComponent,
-    UpdateDialogComponent,
     DeleteDialogComponent,
-    CreateDialogComponent,
+    InputDialogComponent,
     StudentsComponent,
     TeachersComponent,
     CoursesComponent

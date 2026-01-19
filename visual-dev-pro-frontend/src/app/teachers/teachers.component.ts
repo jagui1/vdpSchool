@@ -7,7 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Teacher } from '../interfaces/teacher';
 import { DeleteDialogComponent } from '../dialogs/delete-dialog/delete-dialog.component';
-import { UpdateDialogComponent } from '../dialogs/update-dialog/update-dialog.component';
+import { InputDialogComponent } from '../dialogs/input-dialog/input-dialog.component';
 
 @Component({
   selector: 'app-teachers',
@@ -32,14 +32,15 @@ export class TeachersComponent implements OnInit {
   }
 
   onUpdate(teacherToUpdate: Teacher) {
-    let dialogRef = this.dialog.open(UpdateDialogComponent, {
+    let dialogRef = this.dialog.open(InputDialogComponent, {
       height: '500px',
       width: '500px',
       data: {
-        title: 'Update Teacher',
+        title: 'Update',
+        entity: 'Teacher',
         fields: [
           { label: 'Name', value: teacherToUpdate.fullName },
-          { label: 'Email', value: teacherToUpdate.email },
+          { label: 'Email', value: teacherToUpdate.email, type: 'email' },
           { label: 'Subject', value: teacherToUpdate.subject }
         ]
       }
@@ -72,7 +73,8 @@ export class TeachersComponent implements OnInit {
       height: '500px',
       width: '500px',
       data: {
-        title: 'Delete Teacher',
+        title: 'Delete',
+        entity: 'Teacher',
         fields: [
           { label: 'Name', value: teacherToDelete.fullName },
           { label: 'Email', value: teacherToDelete.email },
@@ -100,8 +102,45 @@ export class TeachersComponent implements OnInit {
   }
 
   onCreate(){
-    // TODO
+    let dialogRef = this.dialog.open(InputDialogComponent, {
+      height: '500px',
+      width: '500px',
+      data: {
+        title: 'Create',
+        entity: 'Teacher',
+        fields: [
+          { label: 'Name', value: '' },
+          { label: 'Email', value: '', type: 'email' },
+          { label: 'Subject', value: '' }
+        ]
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+
+        this.teacherService.createTeacher({
+          schoolId: this.schoolId,
+          fullName: result.Name as string,
+          email: result.Email as string,
+          subject: result.Subject as string,
+          coursesTaught: []
+        }).subscribe({
+          next: (data) => {
+            console.log(data);
+          },
+          error: (err) => {
+            console.log(err);
+          },
+          complete: () => {
+            console.log('Teacher created successfully');
+            this.updateDataSource();
+          }
+        });
+      }
+    });
   }
+
 
   updateDataSource() {
     this.schoolService.getSchool(this.schoolId).subscribe({

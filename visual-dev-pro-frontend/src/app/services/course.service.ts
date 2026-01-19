@@ -24,9 +24,9 @@ export class CourseService {
   //   return this.http.get<Course>(`${this.api}/${courseId}`);
   // }
 
-  // createCourse(newCourse: Course) {
-  //   return this.http.post<Course>(this.api, newCourse);
-  // }
+  createCourse(newCourse: Course) {
+    return this.http.post<Course>(this.api, newCourse);
+  }
 
   updateCourse(updateCourse: Course) {
     if(!updateCourse.id) {

@@ -4,15 +4,15 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DialogData } from 'src/app/interfaces/dialog-data';
 
 @Component({
-  selector: 'app-create-dialog',
-  templateUrl: './create-dialog.component.html',
-  styleUrls: ['./create-dialog.component.scss']
+  selector: 'app-input-dialog',
+  templateUrl: './input-dialog.component.html',
+  styleUrls: ['./input-dialog.component.scss']
 })
-export class CreateDialogComponent implements OnInit {
+export class InputDialogComponent implements OnInit {
 
-  createForm!: FormGroup;
+  inputForm!: FormGroup;
 
-  constructor(public dialogRef: MatDialogRef<CreateDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData) {  }
+  constructor(public dialogRef: MatDialogRef<InputDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData) {  }
 
   ngOnInit() {
     const controls: Record<string, FormControl> = {};
@@ -20,6 +20,10 @@ export class CreateDialogComponent implements OnInit {
     this.data.fields.forEach(field => {
       let validators: ValidatorFn[] = [Validators.required];
 
+      if(field.type == 'email'){
+        validators.push(Validators.email);
+      }
+      
       if(field.type == 'number'){
         validators.push(Validators.pattern('^[0-9]*$'));
       }
@@ -30,10 +34,10 @@ export class CreateDialogComponent implements OnInit {
       );
     });
 
-    this.createForm = new FormGroup(controls);
+    this.inputForm = new FormGroup(controls);
   }
 
   onSubmit() {
-    this.dialogRef.close(this.createForm.value);
+    this.dialogRef.close(this.inputForm.value);
   }
 }

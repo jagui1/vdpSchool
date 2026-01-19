@@ -7,7 +7,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { CourseService } from '../services/course.service';
 import { Course } from '../interfaces/course';
 import { DeleteDialogComponent } from '../dialogs/delete-dialog/delete-dialog.component';
-import { UpdateDialogComponent } from '../dialogs/update-dialog/update-dialog.component';
+import { InputDialogComponent } from '../dialogs/input-dialog/input-dialog.component';
 
 @Component({
   selector: 'app-courses',
@@ -32,11 +32,12 @@ export class CoursesComponent implements OnInit {
   }
 
   onUpdate(courseToUpdate: Course) {
-    let dialogRef = this.dialog.open(UpdateDialogComponent, {
+    let dialogRef = this.dialog.open(InputDialogComponent, {
       height: '500px',
       width: '500px',
       data: {
-        title: 'Update Course',
+        title: 'Update',
+        entity: 'Course',
         fields: [
           { label: 'Name', value: courseToUpdate.courseName },
           { label: 'Credits', value: courseToUpdate.credits, type: 'number' }
@@ -70,7 +71,8 @@ export class CoursesComponent implements OnInit {
       height: '500px',
       width: '500px',
       data: {
-        title: 'Delete Course',
+        title: 'Delete',
+        entity: 'Course',
         fields: [
           { label: 'Name', value: courseToDelete.courseName },
           { label: 'Credits', value: courseToDelete.credits }
@@ -97,8 +99,42 @@ export class CoursesComponent implements OnInit {
   }
 
   onCreate(){
-    // TODO
+    let dialogRef = this.dialog.open(InputDialogComponent, {
+      height: '500px',
+      width: '500px',
+      data: {
+        title: 'Create',
+        entity: 'Course',
+        fields: [
+          { label: 'Name', value: '' },
+          { label: 'Credits', value: '', type: 'number' }
+        ]
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+
+        this.courseService.createCourse({
+          schoolId: this.schoolId,
+          courseName: result.Name as string,
+          credits: result.Credits as number
+        }).subscribe({
+          next: (data) => {
+            console.log(data);
+          },
+          error: (err) => {
+            console.log(err);
+          },
+          complete: () => {
+            console.log('Course created successfully');
+            this.updateDataSource();
+          }
+        });
+      }
+    });  
   }
+
 
   updateDataSource() {
     this.schoolService.getSchool(this.schoolId).subscribe({

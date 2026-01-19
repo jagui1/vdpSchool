@@ -3,9 +3,8 @@ import { SchoolService } from '../services/school.service';
 import { School } from '../interfaces/school';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { UpdateDialogComponent } from '../dialogs/update-dialog/update-dialog.component';
 import { DeleteDialogComponent } from '../dialogs/delete-dialog/delete-dialog.component';
-import { CreateDialogComponent } from '../dialogs/create-dialog/create-dialog.component';
+import { InputDialogComponent } from '../dialogs/input-dialog/input-dialog.component';
 
 @Component({
   selector: 'app-home',
@@ -25,11 +24,12 @@ export class HomeComponent implements OnInit {
   }
 
   onUpdate(schoolToUpdate: School) {
-    let dialogRef = this.dialog.open(UpdateDialogComponent, {
+    let dialogRef = this.dialog.open(InputDialogComponent, {
       height: '500px',
       width: '500px',
       data: {
-        title: 'Update School',
+        title: 'Update',
+        entity: 'School',
         fields: [
           { label: 'Name', value: schoolToUpdate.name },
           { label: 'Address', value: schoolToUpdate.address }
@@ -65,7 +65,8 @@ export class HomeComponent implements OnInit {
       height: '500px',
       width: '500px',
       data: {
-        title: 'Delete School',
+        title: 'Delete',
+        entity: 'School',
         fields: [
           { label: 'Name', value: schoolToDelete.name },
           { label: 'Address', value: schoolToDelete.address }
@@ -92,11 +93,12 @@ export class HomeComponent implements OnInit {
   }
 
   onCreate(){
-    let dialogRef = this.dialog.open(CreateDialogComponent, {
+    let dialogRef = this.dialog.open(InputDialogComponent, {
       height: '500px',
       width: '500px',
       data: {
-        title: 'Create School',
+        title: 'Create',
+        entity: 'School',
         fields: [
           { label: 'Name', value: '' },
           { label: 'Address', value: '' }

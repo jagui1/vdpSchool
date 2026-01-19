@@ -24,9 +24,9 @@ export class StudentService {
   //   return this.http.get<Student>(`${this.api}/${StudentId}`);
   // }
 
-  // createStudent(newStudent: Student) {
-  //   return this.http.post<Student>(this.api, newStudent);
-  // }
+  createStudent(newStudent: Student) {
+    return this.http.post<Student>(this.api, newStudent);
+  }
 
   updateStudent(studentToUpdate: Student) {
     if(!studentToUpdate.id) {

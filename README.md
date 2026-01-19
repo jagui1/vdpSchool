@@ -2,7 +2,9 @@
 
 A simple full-stack CRUD web application built to demonstrate object-oriented design principles, RESTful API development, environment-based configuration, frontend–backend integration using Angular and C# (.NET), and CI/CD using GitHub Actions.
 
-This project models real-world school relationships using object-oriented principles, allowing users to manage entities such as students, teachers, and classes through a web interface hosted on modern cloud-hosted architecture.
+This project models real-world school relationships using object-oriented principles, allowing users to manage entities such as students, teachers, and classes through a web interface hosted on modern cloud-hosted architecture. 
+
+**NOTE: Since I have the free tier of Azure the backend will sleep when not being used so you must open that link first to get the data for the frontend**
 
 ## Tech stack
 

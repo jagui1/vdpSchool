@@ -7,7 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Student } from '../interfaces/student';
 import { DeleteDialogComponent } from '../dialogs/delete-dialog/delete-dialog.component';
-import { UpdateDialogComponent } from '../dialogs/update-dialog/update-dialog.component';
+import { InputDialogComponent } from '../dialogs/input-dialog/input-dialog.component';
 
 @Component({
   selector: 'app-students',
@@ -32,14 +32,15 @@ export class StudentsComponent implements OnInit {
   }
 
   onUpdate(studentToUpdate: Student) {
-    let dialogRef = this.dialog.open(UpdateDialogComponent, {
+    let dialogRef = this.dialog.open(InputDialogComponent, {
       height: '500px',
       width: '500px',
       data: {
-        title: 'Update Student',
+        title: 'Update',
+        entity: 'Student',
         fields: [
           { label: 'Name', value: studentToUpdate.fullName },
-          { label: 'Email', value: studentToUpdate.email },
+          { label: 'Email', value: studentToUpdate.email, type: 'email' },
           { label: 'Grade', value: studentToUpdate.gradeLevel, type: 'number' }
         ]
       }
@@ -72,7 +73,8 @@ export class StudentsComponent implements OnInit {
       height: '500px',
       width: '500px',
       data: {
-        title: 'Delete Student',
+        title: 'Delete',
+        entity: 'Student',
         fields: [
           { label: 'Name', value: studentToDelete.fullName },
           { label: 'Email', value: studentToDelete.email },
@@ -100,7 +102,43 @@ export class StudentsComponent implements OnInit {
   }
 
   onCreate(){
-    // TODO
+    let dialogRef = this.dialog.open(InputDialogComponent, {
+      height: '500px',
+      width: '500px',
+      data: {
+        title: 'Create',
+        entity: 'Student',
+        fields: [
+          { label: 'Name', value: '' },
+          { label: 'Email', value: '', type: 'email' },
+          { label: 'Grade', value: '', type: 'number' }
+        ]
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+
+        this.studentService.createStudent({
+          schoolId: this.schoolId,
+          fullName: result.Name as string,
+          email: result.Email as string,
+          gradeLevel: result.Grade as number,
+          enrolledCourses: []
+        }).subscribe({
+          next: (data) => {
+            console.log(data);
+          },
+          error: (err) => {
+            console.log(err);
+          },
+          complete: () => {
+            console.log('Student created successfully');
+            this.updateDataSource();
+          }
+        });
+      }
+    });
   }
 
   updateDataSource() {
