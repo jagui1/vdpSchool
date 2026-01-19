@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup, AbstractControl, FormControlOptions, Validators, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { FormControl, FormGroup, Validators, ValidatorFn } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DialogData } from 'src/app/interfaces/dialog-data';
 
@@ -19,6 +19,7 @@ export class UpdateDialogComponent implements OnInit {
 
     this.data.fields.forEach(field => {
       let validators: ValidatorFn[] = [Validators.required];
+      
       if(field.type == 'number') {
         validators.push(Validators.pattern('^[0-9]*$'));
       } 

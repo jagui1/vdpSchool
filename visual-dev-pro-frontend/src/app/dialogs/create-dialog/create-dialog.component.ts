@@ -1,8 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { School } from '../../interfaces/school';
-import { SchoolService } from 'src/app/services/school.service';
 import { DialogData } from 'src/app/interfaces/dialog-data';
 
 @Component({
@@ -11,8 +9,6 @@ import { DialogData } from 'src/app/interfaces/dialog-data';
   styleUrls: ['./create-dialog.component.scss']
 })
 export class CreateDialogComponent implements OnInit {
-
-  schoolToCreate!: School;
 
   createForm!: FormGroup;
 
@@ -23,7 +19,7 @@ export class CreateDialogComponent implements OnInit {
 
     this.data.fields.forEach(field => {
       let validators: ValidatorFn[] = [Validators.required];
-      
+
       if(field.type == 'number'){
         validators.push(Validators.pattern('^[0-9]*$'));
       }
