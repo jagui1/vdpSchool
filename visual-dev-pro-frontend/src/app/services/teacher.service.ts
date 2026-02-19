@@ -16,13 +16,12 @@ export class TeacherService {
     return this.http.get<Teacher[]>(this.api);
   }
 
-  // TODO
-  // getTeacher(TeacherId: number) {
-  //   if(!TeacherId) {
-  //     throw new Error('Teacher ID not provided: ID is required for get Teacher.')
-  //   }
-  //   return this.http.get<Teacher>(`${this.api}/${TeacherId}`);
-  // }
+  getTeacher(TeacherId: number) {
+    if(!TeacherId) {
+      throw new Error('Teacher ID not provided: ID is required for get Teacher.')
+    }
+    return this.http.get<Teacher>(`${this.api}/${TeacherId}`);
+  }
 
   createTeacher(newTeacher: Teacher) {
     return this.http.post<Teacher>(this.api, newTeacher);

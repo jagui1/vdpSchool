@@ -16,13 +16,12 @@ export class CourseService {
     return this.http.get<Course[]>(this.api);
   }
 
-  // TODO
-  // getCourse(courseId: number) {
-  //   if(!courseId) {
-  //     throw new Error('Course ID not provided: ID is required for get course.')
-  //   }
-  //   return this.http.get<Course>(`${this.api}/${courseId}`);
-  // }
+  getCourse(courseId: number) {
+    if(!courseId) {
+      throw new Error('Course ID not provided: ID is required for get course.')
+    }
+    return this.http.get<Course>(`${this.api}/${courseId}`);
+  }
 
   createCourse(newCourse: Course) {
     return this.http.post<Course>(this.api, newCourse);

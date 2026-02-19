@@ -16,13 +16,12 @@ export class StudentService {
     return this.http.get<Student[]>(this.api);
   }
 
-  // TODO
-  // getStudent(StudentId: number) {
-  //   if(!StudentId) {
-  //     throw new Error('Student ID not provided: ID is required for get Student.')
-  //   }
-  //   return this.http.get<Student>(`${this.api}/${StudentId}`);
-  // }
+  getStudent(StudentId: number) {
+    if(!StudentId) {
+      throw new Error('Student ID not provided: ID is required for get Student.')
+    }
+    return this.http.get<Student>(`${this.api}/${StudentId}`);
+  }
 
   createStudent(newStudent: Student) {
     return this.http.post<Student>(this.api, newStudent);
